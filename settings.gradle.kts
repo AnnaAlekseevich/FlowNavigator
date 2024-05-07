@@ -21,4 +21,15 @@ dependencyResolutionManagement {
 
 rootProject.name = "FlowNavigator"
 include(":app")
- 
+include(":feature:auth:api")
+include(":feature:auth:ui")
+include(":feature:posts:ui")
+include(":feature:posts:api")
+include(":feature:blog:ui")
+include(":feature:profile:ui")
+
+include(":feature:home:ui")
+include(":core:navigation:ui")
+include(":core:navigation:api")
+include(":core:navigation:impl")
+include(":uikit")
