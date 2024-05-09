@@ -27,6 +27,4 @@ interface TopBarViewState {
         menuItems: List<Pair<Int, () -> Unit>>? = null,
     ) : VisibleTopBar(title, homeActionClick, menuItems)
 
-    object NoTopBar : TopBarViewState
-
 }

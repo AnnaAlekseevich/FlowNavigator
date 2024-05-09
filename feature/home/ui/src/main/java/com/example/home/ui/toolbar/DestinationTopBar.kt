@@ -38,7 +38,5 @@ fun DestinationTopBar(
             )
         }
 
-        is TopBarViewState.NoTopBar -> {
-        }
     }
 }

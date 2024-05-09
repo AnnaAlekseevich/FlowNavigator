@@ -47,7 +47,7 @@ fun MainAppContentScreen(
     }
     val mainScreenViewModel: MainScreenViewModel = hiltViewModel()
     val topBarViewState =
-        remember { mutableStateOf<TopBarViewState>(TopBarViewState.NoTopBar) }
+        remember { mutableStateOf<TopBarViewState>(TopBarViewState.UserRootTopBar()) }
 
     val userUIModel = mainScreenViewModel.userModelState.collectAsState()
 
