@@ -28,7 +28,7 @@ include(":feature:posts:api")
 include(":feature:blog:ui")
 include(":feature:profile:ui")
 
-include(":feature:home:ui")
+include(":feature:main:ui")
 include(":core:navigation:ui")
 include(":core:navigation:api")
 include(":core:navigation:impl")

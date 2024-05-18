@@ -18,7 +18,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.api.BlogDestination
 import com.example.home.ui.toolbar.TopBarViewState
 
-
 @Composable
 fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
     topBarStateListener.invoke(

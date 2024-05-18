@@ -24,11 +24,12 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs["debug"]
         }
     }
     compileOptions {
@@ -63,7 +64,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.compose)
-    implementation(project(":feature:home:ui"))
+    implementation(project(":feature:main:ui"))
     implementation(project(":core:navigation:impl"))
     implementation(project(":uikit"))
     implementation(project(":core:navigation:api"))

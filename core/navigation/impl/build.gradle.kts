@@ -46,7 +46,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.navigation.common.ktx)
     implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(project(":feature:home:ui"))
+    implementation(project(":feature:main:ui"))
     implementation(libs.androidx.navigation.compose)
     implementation(project(":core:navigation:api"))
     testImplementation(libs.junit)

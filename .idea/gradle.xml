@@ -21,8 +21,8 @@
             <option value="$PROJECT_DIR$/feature/auth/ui" />
             <option value="$PROJECT_DIR$/feature/blog" />
             <option value="$PROJECT_DIR$/feature/blog/ui" />
-            <option value="$PROJECT_DIR$/feature/home" />
-            <option value="$PROJECT_DIR$/feature/home/ui" />
+            <option value="$PROJECT_DIR$/feature/main" />
+            <option value="$PROJECT_DIR$/feature/main/ui" />
             <option value="$PROJECT_DIR$/feature/posts" />
             <option value="$PROJECT_DIR$/feature/posts/api" />
             <option value="$PROJECT_DIR$/feature/posts/ui" />
