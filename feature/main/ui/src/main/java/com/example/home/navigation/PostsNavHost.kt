@@ -11,31 +11,30 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
-import com.example.api.PostsDestination
+import androidx.navigation.navArgument
+import com.example.api.Posts
+import com.example.api.SearchParameters
 import com.example.home.ui.FiltersScreen
 import com.example.home.ui.toolbar.TopBarViewState
+import com.example.posts.ui.PostDetailsScreen
 import com.example.posts.ui.PostsScreen
 import com.example.uikit.R
+import kotlinx.serialization.json.Json
 
 @Composable
 fun PostsNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
-
     val showBottomSheet = rememberSaveable { mutableStateOf(false) }
-
     val postsNavController = rememberNavController()
+
     NavHost(
         navController = postsNavController,
-        startDestination = PostsDestination.postsRoute
+        startDestination = Posts
     ) {
-        composable(route = PostsDestination.postsRoute,
-            deepLinks = listOf(navDeepLink {
-                uriPattern = "https://www.example.com/${PostsDestination.postsRoute}"
-            })
-        ) {
+        composable<Posts> {
             topBarStateListener.invoke(
                 TopBarViewState.UserRootTopBar(
                     menuItems = listOf(
@@ -45,12 +44,20 @@ fun PostsNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                     )
                 )
             )
-            PostsScreen()
+            PostsScreen(postsNavController)
         }
 
-//        composable(route = PostsDestination.filtersRoute) {
-//            FiltersScreenContent(showBottomSheet = showBottomSheet)
-//        }
+        composable(
+            route = "postDetails/{parameters}",
+            arguments = listOf(navArgument("parameters") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val json = backStackEntry.arguments?.getString("parameters")
+            val parameters = json?.let { Json.decodeFromString<SearchParameters>(it) }
+            if (parameters != null) {
+                PostDetailsScreen(parameters)
+            }
+        }
+
     }
     FiltersScreenContent(showBottomSheet = showBottomSheet)
 }

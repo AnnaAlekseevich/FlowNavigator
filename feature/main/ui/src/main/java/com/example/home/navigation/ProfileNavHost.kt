@@ -1,17 +1,15 @@
 package com.example.home.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.api.ProfileDestination
-import com.example.api.ProfileDestination.idArg
+import androidx.navigation.toRoute
+import com.example.api.Profile
+import com.example.api.ProfileSettings
 import com.example.home.ui.toolbar.TopBarViewState
 import com.example.profile.ui.ProfileScreen
 import com.example.profile.ui.ProfileSettingsScreen
@@ -25,26 +23,26 @@ fun ProfileNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
 
     NavHost(
         navController = profileNavController,
-        startDestination = ProfileDestination.profileRoute
+        startDestination = Profile
     ) {
-        composable(route = ProfileDestination.profileRoute) {
+        composable<Profile> {
             topBarStateListener.invoke(
                 TopBarViewState.UserRootTopBar(
                     menuItems = listOf(
-                        Pair(R.drawable.ic_filter) {
+                        Pair(R.drawable.ic_arrow_down) {
                             showSheet.value = true
                         }
                     )
                 )
             )
-            ProfileScreen(profileNavController)
+            ProfileScreen(onNavigateToProfile = { idArg ->
+                profileNavController.navigate(ProfileSettings(idArg))
+            })
         }
 
-        composable(
-            route = ProfileDestination.profileSettingsRoute,
-            arguments = listOf(navArgument(idArg) { type = NavType.IntType })
-        ) {
-            Log.d("CheckToolbar", "route = ${profileNavController.currentDestination?.route}")
+        composable<ProfileSettings> {backStackEntry ->
+            val profileSettings: ProfileSettings = backStackEntry.toRoute()
+
             topBarStateListener.invoke(
                 TopBarViewState.ChildTopBar(
                     title = stringResource(id = R.string.profile_settings),
@@ -56,7 +54,7 @@ fun ProfileNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                 )
             )
 
-            val userId = it.arguments?.getInt(idArg) ?: 0
+            val userId = profileSettings.idArg
             ProfileSettingsScreen(userId)
         }
     }

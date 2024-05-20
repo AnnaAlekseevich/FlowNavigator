@@ -22,10 +22,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
-import com.example.api.BlogDestination
-import com.example.api.PostsDestination
-import com.example.api.ProfileDestination
+import com.example.api.Blog
+import com.example.api.Posts
+import com.example.api.Profile
 import com.example.home.navigation.BlogNavHost
 import com.example.home.navigation.PostsNavHost
 import com.example.home.navigation.ProfileNavHost
@@ -36,7 +35,6 @@ import com.example.home.ui.toolbar.TopBarViewState
 @Composable
 fun MainAppContentScreen(
 ) {
-    val isDimmed = remember { mutableStateOf(false) }
     val navController = rememberNavController()
 
     val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -68,13 +66,6 @@ fun MainAppContentScreen(
                     navController = navController,
                     currentDestination = currentDestination
                 )
-                if (isDimmed.value) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.Gray)
-                    )
-                }
             }
         },
         contentWindowInsets =
@@ -91,21 +82,21 @@ fun MainAppContentScreen(
             NavHost(
                 modifier = Modifier.fillMaxSize(),
                 navController = navController,
-                startDestination = BlogDestination.blogContentRoute
+                startDestination = Blog
             ) {
-                composable(BlogDestination.blogContentRoute) {
+
+                composable<Blog> {
                     BlogNavHost { topBar ->
                         topBarViewState.value = topBar
                     }
                 }
-                composable(PostsDestination.postsRoute) {
+                composable<Posts> {
                     PostsNavHost { topBar ->
                         topBarViewState.value = topBar
                     }
                 }
-                composable(ProfileDestination.profileRoute, deepLinks = listOf(navDeepLink {
-                    uriPattern = "https://www.example.com/${ProfileDestination.profileRoute}"
-                })) {
+                composable<Profile>
+                {
                     ProfileNavHost { topBar ->
                         topBarViewState.value = topBar
                     }

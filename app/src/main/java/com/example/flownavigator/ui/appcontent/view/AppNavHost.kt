@@ -5,8 +5,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.api.AuthDestination
 import com.example.impl.registerAuthDestinations
-import com.example.impl.registerMainDestinations
-
 
 @Composable
 fun AppNavHost(
@@ -14,12 +12,11 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AuthDestination.authContentRoute,
+        startDestination = AuthDestination
     ) {
 
         registerAuthDestinations(navController)
 
-        registerMainDestinations()
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.home.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.api.BlogDestination
+import com.example.api.Blog
+import com.example.api.Blog1
+import com.example.api.Blog2
+import com.example.api.Blog3
+import com.example.api.Blog4
+import com.example.api.Blog5
 import com.example.home.ui.toolbar.TopBarViewState
 
 @Composable
@@ -26,17 +30,71 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
 
     val blogNavController = rememberNavController()
 
-    NavHost(blogNavController, startDestination = "${BlogDestination.blogContentRoute}1") {
-        for (i in 1..10) {
-            composable("${BlogDestination.blogContentRoute}$i") {
-                BlogScreen(
-                    text = "Blog $i",
-                    onNextClick = {
-                        if (i < 10) {
-                            blogNavController.navigate("${BlogDestination.blogContentRoute}${i + 1}")
+    val blogScreens = listOf(Blog, Blog1, Blog2, Blog3, Blog4, Blog5)
+
+    NavHost(blogNavController, startDestination = Blog) {
+        blogScreens.forEachIndexed { index, screen ->
+            when (screen) {
+                is Blog -> composable<Blog> {
+                    BlogScreen(
+                        text = "Blog ${index + 1}",
+                        onNextClick = {
+                            if (index < blogScreens.size - 1) {
+                                blogNavController.navigate(blogScreens[index + 1])
+                            }
                         }
-                    }
-                )
+                    )
+                }
+                is Blog1 -> composable<Blog1> {
+                    BlogScreen(
+                        text = "Blog ${index + 1}",
+                        onNextClick = {
+                            if (index < blogScreens.size - 1) {
+                                blogNavController.navigate(blogScreens[index + 1])
+                            }
+                        }
+                    )
+                }
+                is Blog2 -> composable<Blog2> {
+                    BlogScreen(
+                        text = "Blog ${index + 1}",
+                        onNextClick = {
+                            if (index < blogScreens.size - 1) {
+                                blogNavController.navigate(blogScreens[index + 1])
+                            }
+                        }
+                    )
+                }
+                is Blog3 -> composable<Blog3> {
+                    BlogScreen(
+                        text = "Blog ${index + 1}",
+                        onNextClick = {
+                            if (index < blogScreens.size - 1) {
+                                blogNavController.navigate(blogScreens[index + 1])
+                            }
+                        }
+                    )
+                }
+                is Blog4 -> composable<Blog4> {
+                    BlogScreen(
+                        text = "Blog ${index + 1}",
+                        onNextClick = {
+                            if (index < blogScreens.size - 1) {
+                                blogNavController.navigate(blogScreens[index + 1])
+                            }
+                        }
+                    )
+                }
+                is Blog5 -> composable<Blog5> {
+                    BlogScreen(
+                        text = "Blog ${index + 1}",
+                        onNextClick = {
+                            if (index < blogScreens.size - 1) {
+                                blogNavController.navigate(blogScreens[index + 1])
+                            }
+                        }
+                    )
+                }
             }
         }
     }
@@ -47,7 +105,6 @@ fun BlogScreen(
     text: String,
     onNextClick: () -> Unit
 ) {
-    Log.d("CheckScreen", "BlogScreen")
     Column(
         modifier = Modifier
             .fillMaxSize(),

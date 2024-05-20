@@ -61,4 +61,5 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.coil.kt.compose)
+    implementation(libs.kotlinx.serialization.json)
 }

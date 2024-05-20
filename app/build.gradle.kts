@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.hilt) apply true
+    alias(libs.plugins.hilt) 
     kotlin("kapt") version "1.9.23"
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.jetbrainsKotlinParcelize)
 }
 
 android {
