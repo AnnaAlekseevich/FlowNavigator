@@ -1,6 +1,5 @@
 package com.example.posts.ui
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.api.PostDetails
 import com.example.api.SearchParameters
-import kotlinx.serialization.json.Json
 
 @Composable
 fun PostsScreen(postsNavController: NavController) {
@@ -25,10 +24,7 @@ fun PostsScreen(postsNavController: NavController) {
         val parameters = SearchParameters("query!", listOf("filter1", "filter2"))
 
         Button(onClick = {
-            val searchArgument =
-                Uri.encode(Json.encodeToString(SearchParameters.serializer(), parameters))
-            val route = "postDetails/$searchArgument"
-            postsNavController.navigate(route)
+            postsNavController.navigate(PostDetails(parameters))
         }) {
             Text(text = stringResource(id = com.example.uikit.R.string.profile_go_to_posts_details))
         }
