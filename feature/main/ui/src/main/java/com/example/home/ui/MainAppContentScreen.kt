@@ -34,8 +34,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.api.Blog
+import com.example.api.LinkPatterns
 import com.example.api.Posts
 import com.example.api.Profile
 import com.example.home.navigation.BlogNavHost
@@ -70,6 +72,8 @@ fun MainAppContentScreen() {
             NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo)
         }
     }
+
+    val uri = LinkPatterns.uri
 
     Scaffold(
         topBar = {
@@ -169,7 +173,7 @@ fun MainAppContentScreen() {
                     navController = navController,
                     startDestination = Blog
                 ) {
-                    composable<Blog> {
+                    composable<Blog> (deepLinks = listOf(navDeepLink { uriPattern = "$uri/blog" })) {
                         BlogNavHost { topBar ->
                             topBarViewState.value = topBar
                         }
@@ -179,7 +183,7 @@ fun MainAppContentScreen() {
                             topBarViewState.value = topBar
                         }
                     }
-                    composable<Profile> {
+                    composable<Profile>(deepLinks = listOf(navDeepLink { uriPattern = "$uri/profile/{idArg}" })) {
                         ProfileNavHost { topBar ->
                             topBarViewState.value = topBar
                         }

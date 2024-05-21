@@ -14,10 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.example.api.Blog
 import com.example.api.Blog1
 import com.example.api.Blog2
 import com.example.api.Blog3
+import com.example.api.LinkPatterns
 import com.example.home.ui.toolbar.TopBarViewState
 
 @Composable
@@ -29,6 +31,8 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
     val blogNavController = rememberNavController()
 
     val blogScreens = listOf(Blog, Blog1, Blog2, Blog3)
+
+    val uri = LinkPatterns.uri
 
     NavHost(blogNavController, startDestination = Blog) {
         blogScreens.forEachIndexed { index, screen ->
@@ -63,7 +67,7 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                         }
                     )
                 }
-                is Blog3 -> composable<Blog3> {
+                is Blog3 -> composable<Blog3> (deepLinks = listOf(navDeepLink { uriPattern = "$uri/blog" })) {
                     BlogScreen(
                         text = "Blog ${index + 1}",
                         onNextClick = {

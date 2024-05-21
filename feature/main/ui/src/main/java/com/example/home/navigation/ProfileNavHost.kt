@@ -7,7 +7,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
+import com.example.api.LinkPatterns
 import com.example.api.Profile
 import com.example.api.ProfileSettings
 import com.example.home.ui.toolbar.TopBarViewState
@@ -20,6 +22,7 @@ fun ProfileNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
 
     val profileNavController = rememberNavController()
     val showSheet = rememberSaveable { mutableStateOf(false) }
+    val uri = LinkPatterns.uri
 
     NavHost(
         navController = profileNavController,
@@ -40,7 +43,9 @@ fun ProfileNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
             })
         }
 
-        composable<ProfileSettings> {backStackEntry ->
+        composable<ProfileSettings>(deepLinks = listOf(
+            navDeepLink { uriPattern = "$uri/profile/{idArg}" }
+        ))  {backStackEntry ->
             val profileSettings: ProfileSettings = backStackEntry.toRoute()
 
             topBarStateListener.invoke(
