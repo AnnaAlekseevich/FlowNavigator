@@ -48,9 +48,6 @@ fun PostsNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
             PostsScreen()
         }
 
-//        composable(route = PostsDestination.filtersRoute) {
-//            FiltersScreenContent(showBottomSheet = showBottomSheet)
-//        }
     }
     FiltersScreenContent(showBottomSheet = showBottomSheet)
 }
