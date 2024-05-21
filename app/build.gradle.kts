@@ -80,5 +80,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
-
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
+    implementation(libs.marerial.adaptive)
+    implementation(libs.marerial.adaptive.layout)
+    implementation(libs.marerial.adaptive.navigation)
 }

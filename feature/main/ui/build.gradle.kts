@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":feature:posts:ui"))
     implementation(project(":feature:blog:ui"))
     implementation(project(":feature:profile:ui"))
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,4 +63,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.coil.kt.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.marerial.adaptive)
+    implementation(libs.marerial.adaptive.layout)
+    implementation(libs.marerial.adaptive.navigation)
 }

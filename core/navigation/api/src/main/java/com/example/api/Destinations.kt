@@ -28,12 +28,6 @@ object Blog2
 object Blog3
 
 @Serializable
-object Blog4
-
-@Serializable
-object Blog5
-
-@Serializable
 object Posts
 
 @Serializable

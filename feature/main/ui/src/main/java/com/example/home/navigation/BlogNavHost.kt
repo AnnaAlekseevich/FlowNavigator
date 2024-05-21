@@ -18,8 +18,6 @@ import com.example.api.Blog
 import com.example.api.Blog1
 import com.example.api.Blog2
 import com.example.api.Blog3
-import com.example.api.Blog4
-import com.example.api.Blog5
 import com.example.home.ui.toolbar.TopBarViewState
 
 @Composable
@@ -30,7 +28,7 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
 
     val blogNavController = rememberNavController()
 
-    val blogScreens = listOf(Blog, Blog1, Blog2, Blog3, Blog4, Blog5)
+    val blogScreens = listOf(Blog, Blog1, Blog2, Blog3)
 
     NavHost(blogNavController, startDestination = Blog) {
         blogScreens.forEachIndexed { index, screen ->
@@ -66,26 +64,6 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                     )
                 }
                 is Blog3 -> composable<Blog3> {
-                    BlogScreen(
-                        text = "Blog ${index + 1}",
-                        onNextClick = {
-                            if (index < blogScreens.size - 1) {
-                                blogNavController.navigate(blogScreens[index + 1])
-                            }
-                        }
-                    )
-                }
-                is Blog4 -> composable<Blog4> {
-                    BlogScreen(
-                        text = "Blog ${index + 1}",
-                        onNextClick = {
-                            if (index < blogScreens.size - 1) {
-                                blogNavController.navigate(blogScreens[index + 1])
-                            }
-                        }
-                    )
-                }
-                is Blog5 -> composable<Blog5> {
                     BlogScreen(
                         text = "Blog ${index + 1}",
                         onNextClick = {

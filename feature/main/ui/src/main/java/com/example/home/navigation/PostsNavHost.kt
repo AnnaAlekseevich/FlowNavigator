@@ -11,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -49,6 +50,16 @@ fun PostsNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
         }
 
         composable<PostDetails>(typeMap = mapOf(typeOf<SearchParameters>() to SearchParametersType)) { backStackEntry ->
+            topBarStateListener.invoke(
+                TopBarViewState.ChildTopBar(
+                    title = stringResource(id = R.string.post_details),
+                    homeImageResId = R.drawable.ic_back,
+                    homeActionClick = {
+                        postsNavController.popBackStack()
+                    },
+                    menuItems = null
+                )
+            )
             val bookDetail = backStackEntry.toRoute<PostDetails>()
             PostDetailsScreen(
                 searchParameters = bookDetail.parameters,
