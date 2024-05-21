@@ -31,7 +31,7 @@ fun ProfileNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
             topBarStateListener.invoke(
                 TopBarViewState.UserRootTopBar(
                     menuItems = listOf(
-                        Pair(R.drawable.ic_filter) {
+                        Pair(R.drawable.ic_arrow_down) {
                             showSheet.value = true
                         }
                     )

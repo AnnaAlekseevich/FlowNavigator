@@ -60,7 +60,6 @@ fun MainAppContentScreen(
                     .background(Color.Blue),
                 topBarViewState = topBarViewState.value
             )
-
         },
         bottomBar = {
             Box {
