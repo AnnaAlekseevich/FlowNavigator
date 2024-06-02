@@ -11,31 +11,32 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
-import com.example.api.PostsDestination
+import androidx.navigation.toRoute
+import com.example.api.PostDetails
+import com.example.api.Posts
+import com.example.api.SearchParameters
+import com.example.api.SearchParametersType
 import com.example.home.ui.FiltersScreen
 import com.example.home.ui.toolbar.TopBarViewState
+import com.example.posts.ui.PostDetailsScreen
 import com.example.posts.ui.PostsScreen
 import com.example.uikit.R
+import kotlin.reflect.typeOf
 
 @Composable
 fun PostsNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
-
     val showBottomSheet = rememberSaveable { mutableStateOf(false) }
-
     val postsNavController = rememberNavController()
+
     NavHost(
         navController = postsNavController,
-        startDestination = PostsDestination.postsRoute
+        startDestination = Posts
     ) {
-        composable(route = PostsDestination.postsRoute,
-            deepLinks = listOf(navDeepLink {
-                uriPattern = "https://www.example.com/${PostsDestination.postsRoute}"
-            })
-        ) {
+        composable<Posts> {
             topBarStateListener.invoke(
                 TopBarViewState.UserRootTopBar(
                     menuItems = listOf(
@@ -45,7 +46,24 @@ fun PostsNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                     )
                 )
             )
-            PostsScreen()
+            PostsScreen(postsNavController)
+        }
+
+        composable<PostDetails>(typeMap = mapOf(typeOf<SearchParameters>() to SearchParametersType)) { backStackEntry ->
+            topBarStateListener.invoke(
+                TopBarViewState.ChildTopBar(
+                    title = stringResource(id = R.string.post_details),
+                    homeImageResId = R.drawable.ic_back,
+                    homeActionClick = {
+                        postsNavController.popBackStack()
+                    },
+                    menuItems = null
+                )
+            )
+            val bookDetail = backStackEntry.toRoute<PostDetails>()
+            PostDetailsScreen(
+                searchParameters = bookDetail.parameters,
+            )
         }
 
     }

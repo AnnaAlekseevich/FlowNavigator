@@ -17,7 +17,7 @@ fun AuthContent(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         TextButton(content = { Text(text = stringResource(id = R.string.main_content_flow)) },
             onClick = {
-                navController.navigate(route = MainDestination.mainRoute)
+                navController.navigate(route = MainDestination)
             })
     }
 }

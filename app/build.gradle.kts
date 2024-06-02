@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.hilt) apply true
+    alias(libs.plugins.hilt) 
     kotlin("kapt") version "1.9.23"
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.jetbrainsKotlinParcelize)
 }
 
 android {
@@ -78,5 +80,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
-
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
+    implementation(libs.marerial.adaptive)
+    implementation(libs.marerial.adaptive.layout)
+    implementation(libs.marerial.adaptive.navigation)
 }

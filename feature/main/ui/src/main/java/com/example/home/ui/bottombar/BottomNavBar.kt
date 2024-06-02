@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.example.api.BlogDestination
-import com.example.api.PostsDestination
-import com.example.api.ProfileDestination
+import com.example.api.Blog
+import com.example.api.Posts
+import com.example.api.Profile
 import com.example.uikit.R
 
 @Composable
@@ -48,8 +48,8 @@ private fun RowScope.BlogBarItem(
     navController: NavHostController,
     currentDestination: NavDestination?,
 ) {
-    val route = BlogDestination.blogContentRoute
-    val selected = currentDestination?.route?.contains(BlogDestination.baseRoute) ?: false
+    val route = Blog
+    val selected = route::class.simpleName?.let { currentDestination?.route?.contains(it) } == true
 
     NavigationBarItem(
         selected = selected,
@@ -68,13 +68,6 @@ private fun RowScope.BlogBarItem(
         label = {
             NavBarLabel(R.string.main_content_blog, isSelected = selected)
         },
-//        colors = NavigationBarItemDefaults.colors(
-//            selectedIconColor = Color.Black,
-//            selectedTextColor = Color.Black,
-//            indicatorColor = Color.LightGray,
-//            unselectedTextColor = Color.Gray,
-//            unselectedIconColor = Color.Gray,
-//        )
     )
 }
 
@@ -83,8 +76,8 @@ private fun RowScope.PostsBarItem(
     navController: NavHostController,
     currentDestination: NavDestination?,
 ) {
-    val route = PostsDestination.postsRoute
-    val selected = currentDestination?.route?.contains(PostsDestination.baseRoute) ?: false
+    val route = Posts
+    val selected = route::class.simpleName?.let { currentDestination?.route?.contains(it) } == true
 
     NavigationBarItem(
         selected = selected,
@@ -111,8 +104,8 @@ private fun RowScope.ProfileBarItem(
     navController: NavHostController,
     currentDestination: NavDestination?,
 ) {
-    val route = ProfileDestination.profileRoute
-    val selected = currentDestination?.route?.contains(ProfileDestination.baseRoute) ?: false
+    val route = Profile
+    val selected = route::class.simpleName?.let { currentDestination?.route?.contains(it) } == true
     NavigationBarItem(
         selected = selected,
         onClick = {
