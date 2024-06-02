@@ -46,9 +46,7 @@ fun RootDestinationTopBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = {
-//                openDrawer()
-            }) {
+            IconButton(onClick = { }) {
                 if (userUiModelInfo.userAvatarUrl != null) {
 
                     Image(
