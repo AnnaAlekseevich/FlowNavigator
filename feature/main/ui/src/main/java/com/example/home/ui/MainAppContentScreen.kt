@@ -1,10 +1,8 @@
 package com.example.home.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -20,15 +18,11 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -43,8 +37,6 @@ import com.example.api.Profile
 import com.example.home.navigation.BlogNavHost
 import com.example.home.navigation.PostsNavHost
 import com.example.home.navigation.ProfileNavHost
-import com.example.home.ui.toolbar.DestinationTopBar
-import com.example.home.ui.toolbar.TopBarViewState
 
 @Composable
 fun MainAppContentScreen() {
@@ -58,11 +50,6 @@ fun MainAppContentScreen() {
             navBackStackEntry.value?.destination
         }
     }
-    val mainScreenViewModel: MainScreenViewModel = hiltViewModel()
-    val topBarViewState =
-        remember { mutableStateOf<TopBarViewState>(TopBarViewState.UserRootTopBar()) }
-
-    val userUIModel = mainScreenViewModel.userModelState.collectAsState()
 
     val adaptiveInfo = currentWindowAdaptiveInfo()
     val customNavSuiteType = with(adaptiveInfo) {
@@ -76,15 +63,7 @@ fun MainAppContentScreen() {
     val uri = LinkPatterns.uri
 
     Scaffold(
-        topBar = {
-            DestinationTopBar(
-                userUiModelInfo = userUIModel.value,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Blue),
-                topBarViewState = topBarViewState.value
-            )
-        },
+        topBar = {},
         contentWindowInsets =
         WindowInsets(
             top = 0.dp,
@@ -173,19 +152,13 @@ fun MainAppContentScreen() {
                     startDestination = Blog
                 ) {
                     composable<Blog> (deepLinks = listOf(navDeepLink { uriPattern = "$uri/blog" })) {
-                        BlogNavHost { topBar ->
-                            topBarViewState.value = topBar
-                        }
+                        BlogNavHost()
                     }
                     composable<Posts> {
-                        PostsNavHost { topBar ->
-                            topBarViewState.value = topBar
-                        }
+                        PostsNavHost()
                     }
                     composable<Profile>(deepLinks = listOf(navDeepLink { uriPattern = "$uri/profile/{idArg}" })) {
-                        ProfileNavHost { topBar ->
-                            topBarViewState.value = topBar
-                        }
+                        ProfileNavHost()
                     }
                 }
             }

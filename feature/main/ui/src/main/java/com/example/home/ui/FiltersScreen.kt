@@ -7,14 +7,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.uikit.theme.FlowNavigatorTheme
+import com.example.uikit.R
 
 @Composable
 fun FiltersScreen() {
     Box(modifier = Modifier.fillMaxWidth().padding(vertical = 160.dp), contentAlignment = Alignment.Center) {
-        Text(text = "FiltersScreen")
+        Text(text = stringResource(R.string.filters_screen))
     }
 }
 
@@ -22,6 +24,6 @@ fun FiltersScreen() {
 @Composable
 fun Preview_FiltersScreen() {
     FlowNavigatorTheme {
-        Text(text = "FiltersScreen")
+        Text(text = stringResource(R.string.filters_screen))
     }
 }

@@ -4,9 +4,14 @@
     <string name="main_content_flow">Go to main content -></string>
     <string name="main_content_blog">Blog</string>
     <string name="main_content_posts">Posts</string>
+    <string name="blog_screen">BlogScreen</string>
     <string name="profile_go_to_posts_details">Go to Post Details</string>
-    <string name="profile_posts_details">Post Details</string>
+    <string name="posts_details">Post Details</string>
     <string name="main_content_profile">Profile</string>
+    <string name="filters_screen">FiltersScreen</string>
     <string name="profile_settings">Profile Settings</string>
+    <string name="go_to_the_Settings">go to the Settings</string>
+    <string name="go_to_the_Bottom_Sheet">Go to the Bottom Sheet</string>
     <string name="post_details">Post Details</string>
+    <string name="bottom_sheet_string">"Bottom Sheet Screen"</string>
 </resources>

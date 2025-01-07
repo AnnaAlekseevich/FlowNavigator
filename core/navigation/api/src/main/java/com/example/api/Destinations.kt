@@ -31,6 +31,12 @@ object Blog3
 object Posts
 
 @Serializable
+object Overlay
+
+@Serializable
+object BottomSheet
+
+@Serializable
 @Parcelize
 data class SearchParameters(
     val searchQuery: String,

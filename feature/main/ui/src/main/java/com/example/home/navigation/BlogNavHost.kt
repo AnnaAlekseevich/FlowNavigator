@@ -1,16 +1,6 @@
 package com.example.home.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -20,14 +10,10 @@ import com.example.api.Blog1
 import com.example.api.Blog2
 import com.example.api.Blog3
 import com.example.api.LinkPatterns
-import com.example.home.ui.toolbar.TopBarViewState
+import com.example.blog.ui.BlogScreen
 
 @Composable
-fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
-    topBarStateListener.invoke(
-        TopBarViewState.UserRootTopBar()
-    )
-
+fun BlogNavHost() {
     val blogNavController = rememberNavController()
 
     val blogScreens = listOf(Blog, Blog1, Blog2, Blog3)
@@ -54,7 +40,8 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                             if (index < blogScreens.size - 1) {
                                 blogNavController.navigate(blogScreens[index + 1])
                             }
-                        }
+                        },
+                        onBack = blogNavController::popBackStack
                     )
                 }
                 is Blog2 -> composable<Blog2> {
@@ -64,7 +51,8 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                             if (index < blogScreens.size - 1) {
                                 blogNavController.navigate(blogScreens[index + 1])
                             }
-                        }
+                        },
+                        onBack = blogNavController::popBackStack
                     )
                 }
                 is Blog3 -> composable<Blog3> (deepLinks = listOf(navDeepLink { uriPattern = "$uri/blog" })) {
@@ -74,29 +62,11 @@ fun BlogNavHost(topBarStateListener: (TopBarViewState) -> Unit) {
                             if (index < blogScreens.size - 1) {
                                 blogNavController.navigate(blogScreens[index + 1])
                             }
-                        }
+                        },
+                        onBack = blogNavController::popBackStack
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun BlogScreen(
-    text: String,
-    onNextClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = text)
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = onNextClick) {
-            Text("Next")
         }
     }
 }
