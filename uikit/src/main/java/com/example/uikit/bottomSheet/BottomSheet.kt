@@ -50,7 +50,6 @@ fun BottomSheetScreen(title: String, onBack: () -> Unit, content: @Composable ()
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-    var isAnimating by remember { mutableStateOf(false) }
     var isVisible by remember { mutableStateOf(true) }
     val alphaAnim = animateFloatAsState(
         targetValue = if (isVisible) 0.25f else 0f,
@@ -72,23 +71,19 @@ fun BottomSheetScreen(title: String, onBack: () -> Unit, content: @Composable ()
             }
 
             override suspend fun onPreFling(available: Velocity): Velocity {
-                if (available.y > 0 && dragOffsetY.value > closeThreshold && !isAnimating) {
+                if (available.y > 0 && dragOffsetY.value > closeThreshold) {
                     coroutineScope.launch {
-                        isAnimating = true
                         dragOffsetY.animateTo(screenHeightPx, tween(150))
                         onBack()
-                        isAnimating = false
                     }
                 }
                 return super.onPreFling(available)
             }
 
             override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-                if (dragOffsetY.value > closeThreshold && !isAnimating) {
-                    isAnimating = true
+                if (dragOffsetY.value > closeThreshold) {
                     dragOffsetY.animateTo(screenHeightPx, tween(150))
                     onBack()
-                    isAnimating = false
                 } else {
                     dragOffsetY.animateTo(0f, tween(200))
                 }
