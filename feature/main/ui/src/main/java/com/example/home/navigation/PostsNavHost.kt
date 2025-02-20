@@ -11,9 +11,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.api.PostDetails
 import com.example.api.Posts
@@ -25,9 +25,8 @@ import com.example.posts.ui.PostsScreen
 import kotlin.reflect.typeOf
 
 @Composable
-fun PostsNavHost() {
+fun PostsNavHost(postsNavController: NavHostController) {
     val showBottomSheet = rememberSaveable { mutableStateOf(false) }
-    val postsNavController = rememberNavController()
 
     NavHost(
         navController = postsNavController,

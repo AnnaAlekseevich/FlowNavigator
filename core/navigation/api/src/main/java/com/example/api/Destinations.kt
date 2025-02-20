@@ -80,4 +80,7 @@ val SearchParametersType = object : NavType<SearchParameters>(
 object Profile
 
 @Serializable
+object Test
+
+@Serializable
 data class ProfileSettings(val idArg: Int)

@@ -18,7 +18,10 @@ import com.example.uikit.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(onNavigateToProfile: (idArg: Int) -> Unit, onBottomSheet: (() -> Unit)? = null) {
+fun ProfileScreen(
+    onNavigateToProfile: (idArg: Int) -> Unit,
+    onBottomSheet: (() -> Unit)? = null
+) {
     Scaffold(
         topBar = {
             TopAppBar(

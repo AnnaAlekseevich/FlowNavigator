@@ -1,24 +1,19 @@
 package com.example.home.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
 import com.example.api.Blog
 import com.example.api.Blog1
 import com.example.api.Blog2
 import com.example.api.Blog3
-import com.example.api.LinkPatterns
 import com.example.blog.ui.BlogScreen
 
 @Composable
-fun BlogNavHost() {
-    val blogNavController = rememberNavController()
+fun BlogNavHost(blogNavController: NavHostController) {
 
     val blogScreens = listOf(Blog, Blog1, Blog2, Blog3)
-
-    val uri = LinkPatterns.uri
 
     NavHost(blogNavController, startDestination = Blog) {
         blogScreens.forEachIndexed { index, screen ->
@@ -55,7 +50,7 @@ fun BlogNavHost() {
                         onBack = blogNavController::popBackStack
                     )
                 }
-                is Blog3 -> composable<Blog3> (deepLinks = listOf(navDeepLink { uriPattern = "$uri/blog" })) {
+                is Blog3 -> composable<Blog3> {
                     BlogScreen(
                         text = "Blog ${index + 1}",
                         onNextClick = {

@@ -11,6 +11,8 @@
     <string name="filters_screen">FiltersScreen</string>
     <string name="profile_settings">Profile Settings</string>
     <string name="go_to_the_Settings">go to the Settings</string>
+    <string name="go_to_the_Test_Screen">Go to the Test Screen</string>
+    <string name="the_Test_Screen">Test Screen</string>
     <string name="go_to_the_Bottom_Sheet">Go to the Bottom Sheet</string>
     <string name="post_details">Post Details</string>
     <string name="bottom_sheet_string">"Bottom Sheet Screen"</string>

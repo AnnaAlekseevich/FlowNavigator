@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,11 +25,11 @@ import com.example.uikit.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileSettingsScreen(userId: Int, onBack: () -> Unit, onTestScreen: () -> Unit) {
+fun TestScreen(onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.profile_settings)) },
+                title = { Text(stringResource(R.string.go_to_the_Test_Screen)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -51,19 +50,16 @@ fun ProfileSettingsScreen(userId: Int, onBack: () -> Unit, onTestScreen: () -> U
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings",
+                    imageVector = Icons.Default.ThumbUp,
+                    contentDescription = "Test",
                     modifier = Modifier.size(50.dp),
                     tint = Color.Black
                 )
                 Text(
-                    text = "${stringResource(id = R.string.profile_settings)} $userId",
+                    text = stringResource(R.string.the_Test_Screen),
                     fontSize = 16.sp,
                     modifier = Modifier.padding(top = 8.dp)
                 )
-                Button(onClick = onTestScreen) {
-                    Text(text = stringResource(R.string.go_to_the_Test_Screen))
-                }
             }
         }
     )

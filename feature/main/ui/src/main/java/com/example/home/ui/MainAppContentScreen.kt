@@ -1,5 +1,9 @@
 package com.example.home.ui
 
+import android.app.Activity
+import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,38 +22,36 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.api.Blog
-import com.example.api.LinkPatterns
 import com.example.api.Posts
 import com.example.api.Profile
+import com.example.api.ProfileSettings
+import com.example.api.Test
 import com.example.home.navigation.BlogNavHost
 import com.example.home.navigation.PostsNavHost
 import com.example.home.navigation.ProfileNavHost
+import kotlinx.coroutines.delay
 
 @Composable
 fun MainAppContentScreen() {
-    val navController = rememberNavController()
+    val blogNavController = rememberNavController()
+    val postsNavController = rememberNavController()
+    val profileNavController = rememberNavController()
 
-    val navBackStackEntry = navController.currentBackStackEntryAsState()
-    val navItems = listOf(Blog, Posts, Profile)
-
-    val currentDestination by remember {
-        derivedStateOf {
-            navBackStackEntry.value?.destination
-        }
-    }
+    val selectedTab = remember { mutableStateOf<Any>(Blog) }
+    val tabBackStack = remember { mutableStateListOf<Any>() }
+    val context = LocalContext.current
 
     val adaptiveInfo = currentWindowAdaptiveInfo()
     val customNavSuiteType = with(adaptiveInfo) {
@@ -60,108 +62,179 @@ fun MainAppContentScreen() {
         }
     }
 
-    val uri = LinkPatterns.uri
+    HandleBackPress(selectedTab, tabBackStack, blogNavController, postsNavController, profileNavController, context)
+    HandleDeepLinks(context, selectedTab, tabBackStack, profileNavController)
 
     Scaffold(
         topBar = {},
-        contentWindowInsets =
-        WindowInsets(
-            top = 0.dp,
-            bottom = 0.dp,
-        ),
+        contentWindowInsets = WindowInsets(top = 0.dp, bottom = 0.dp),
     ) { padding ->
         NavigationSuiteScaffold(
             modifier = Modifier.padding(padding),
             layoutType = customNavSuiteType,
             navigationSuiteItems = {
-                navItems.forEach { navItem ->
+                listOf(Blog, Posts, Profile).forEach { navItem ->
                     item(
                         modifier = Modifier.wrapContentWidth(),
                         icon = {
-                            when (navItem) {
-                                is Blog -> {
-                                    Icon(
-                                        modifier = Modifier
-                                            .padding(start = 10.dp, end = 10.dp)
-                                            .size(32.dp)
-                                            .padding(2.dp),
-                                        imageVector = Icons.Default.Star,
-                                        contentDescription = null
-                                    )
-                                }
-
-                                is Posts -> {
-                                    Icon(
-                                        modifier = Modifier
-                                            .padding(start = 10.dp, end = 10.dp)
-                                            .size(32.dp)
-                                            .padding(2.dp),
-                                        imageVector = Icons.Default.Edit,
-                                        contentDescription = null
-                                    )
-                                }
-
-                                is Profile -> {
-                                    Icon(
-                                        modifier = Modifier
-                                            .padding(start = 10.dp, end = 10.dp)
-                                            .size(32.dp)
-                                            .padding(2.dp),
-                                        imageVector = Icons.Default.AccountCircle,
-                                        contentDescription = null
-                                    )
-                                }
-
-                                else -> {
-                                    Icon(
-                                        modifier = Modifier
-                                            .padding(start = 10.dp, end = 10.dp)
-                                            .size(32.dp)
-                                            .padding(2.dp),
-                                        imageVector = Icons.Default.Star,
-                                        contentDescription = null
-                                    )
-                                }
-
-                            }
+                            Icon(
+                                modifier = Modifier
+                                    .padding(start = 10.dp, end = 10.dp)
+                                    .size(32.dp)
+                                    .padding(2.dp),
+                                imageVector = when (navItem) {
+                                    Blog -> Icons.Default.Star
+                                    Posts -> Icons.Default.Edit
+                                    Profile -> Icons.Default.AccountCircle
+                                    else -> Icons.Default.Star
+                                },
+                                contentDescription = null
+                            )
                         },
-                        label = { Text(modifier = Modifier.wrapContentWidth(), text = navItem::class.simpleName ?: "") },
-                        selected = navItem::class.simpleName?.let {
-                            currentDestination?.route?.contains(it)
-                        } == true,
+                        label = {
+                            Text(
+                                modifier = Modifier.wrapContentWidth(),
+                                text = navItem::class.simpleName ?: ""
+                            )
+                        },
+                        selected = selectedTab.value == navItem,
                         onClick = {
-                            navController.navigate(navItem) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                            if (navItem != selectedTab.value) {
+                                if (!tabBackStack.contains(selectedTab.value)) {
+                                    tabBackStack.add(selectedTab.value)
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                                selectedTab.value = navItem
                             }
                         }
                     )
                 }
             }
         ) {
-            Row(
-                Modifier
-                    .fillMaxSize()
-            ) {
-                NavHost(
-                    modifier = Modifier.fillMaxSize(),
-                    navController = navController,
-                    startDestination = Blog
-                ) {
-                    composable<Blog> (deepLinks = listOf(navDeepLink { uriPattern = "$uri/blog" })) {
-                        BlogNavHost()
-                    }
-                    composable<Posts> {
-                        PostsNavHost()
-                    }
-                    composable<Profile>(deepLinks = listOf(navDeepLink { uriPattern = "$uri/profile/{idArg}" })) {
-                        ProfileNavHost()
-                    }
+            Row(Modifier.fillMaxSize()) {
+                when (selectedTab.value) {
+                    Blog -> BlogNavHost(blogNavController)
+                    Posts -> PostsNavHost(postsNavController)
+                    Profile -> ProfileNavHost(profileNavController)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun HandleBackPress(
+    selectedTab: MutableState<Any>,
+    tabBackStack: MutableList<Any>,
+    blogNavController: NavHostController,
+    postsNavController: NavHostController,
+    profileNavController: NavHostController,
+    context: Context
+) {
+    BackHandler(true) {
+        when {
+            canPopBackStack(selectedTab, blogNavController, postsNavController, profileNavController) -> {
+                popBackStackForSelectedTab(selectedTab, blogNavController, postsNavController, profileNavController)
+            }
+            tabBackStack.isNotEmpty() -> selectedTab.value = tabBackStack.removeAt(tabBackStack.lastIndex)
+            else -> (context as? Activity)?.finish()
+        }
+    }
+}
+
+@Composable
+fun HandleDeepLinks(
+    context: Context,
+    selectedTab: MutableState<Any>,
+    tabBackStack: MutableList<Any>,
+    profileNavController: NavHostController
+) {
+    LaunchedEffect((context as? Activity)?.intent) {
+        (context as? Activity)?.intent?.data?.toString()?.let { data ->
+            when {
+                "bottomSheet" in data -> navigateToProfileTab(selectedTab, tabBackStack, profileNavController)
+                "profile" in data -> handleProfileDeepLink(data, selectedTab, tabBackStack, profileNavController)
+                "blog" in data -> navigateToTabWithBackStack(Blog, selectedTab, tabBackStack)
+                "posts" in data -> navigateToTabWithBackStack(Posts, selectedTab, tabBackStack)
+            }
+            (context as? Activity)?.intent = null
+        }
+    }
+}
+
+fun canPopBackStack(
+    selectedTab: Any,
+    blogNavController: NavHostController,
+    postsNavController: NavHostController,
+    profileNavController: NavHostController
+): Boolean {
+    return when (selectedTab) {
+        Blog -> blogNavController.previousBackStackEntry != null
+        Posts -> postsNavController.previousBackStackEntry != null
+        Profile -> profileNavController.previousBackStackEntry != null
+        else -> false
+    }
+}
+
+fun popBackStackForSelectedTab(
+    selectedTab: Any,
+    blogNavController: NavHostController,
+    postsNavController: NavHostController,
+    profileNavController: NavHostController
+) {
+    when (selectedTab) {
+        Blog -> blogNavController.popBackStack()
+        Posts -> postsNavController.popBackStack()
+        Profile -> profileNavController.popBackStack()
+    }
+}
+
+fun navigateToTabWithBackStack(
+    newTab: Any,
+    selectedTab: MutableState<Any>,
+    tabBackStack: MutableList<Any>
+) {
+    if (selectedTab.value != newTab) {
+        tabBackStack.add(selectedTab.value)
+    }
+    selectedTab.value = newTab
+}
+
+private suspend fun navigateToProfileTab(
+    selectedTab: MutableState<Any>,
+    tabBackStack: MutableList<Any>,
+    profileNavController: NavHostController
+) {
+    navigateToTabWithBackStack(Profile, selectedTab, tabBackStack)
+    delay(10)
+    profileNavController.navigate(Profile) {
+        launchSingleTop = true
+        restoreState = true
+        popUpTo(Profile) { saveState = true }
+    }
+}
+
+private suspend fun handleProfileDeepLink(
+    data: String,
+    selectedTab: MutableState<Any>,
+    tabBackStack: MutableList<Any>,
+    profileNavController: NavHostController
+) {
+    navigateToTabWithBackStack(Profile, selectedTab, tabBackStack)
+    delay(10)
+
+    val pathSegments = Uri.parse(data).pathSegments
+    val idArg = pathSegments?.getOrNull(1)?.toIntOrNull() ?: 0
+    val openTestScreen = pathSegments?.getOrNull(2) == "test"
+
+    profileNavController.navigate(ProfileSettings(idArg)) {
+        launchSingleTop = true
+        restoreState = true
+    }
+
+    if (openTestScreen) {
+        profileNavController.navigate(Test) {
+            launchSingleTop = true
+            restoreState = true
         }
     }
 }

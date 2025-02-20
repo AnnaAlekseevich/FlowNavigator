@@ -3,8 +3,9 @@ package com.example.flownavigator.ui.appcontent.view
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.example.api.AuthDestination
-import com.example.impl.registerAuthDestinations
+import androidx.navigation.compose.composable
+import com.example.api.MainDestination
+import com.example.home.ui.MainAppContentScreen
 
 @Composable
 fun AppNavHost(
@@ -12,10 +13,12 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AuthDestination
+        startDestination = MainDestination
     ) {
 
-        registerAuthDestinations(navController)
+        composable<MainDestination> {
+            MainAppContentScreen()
+        }
 
     }
 
